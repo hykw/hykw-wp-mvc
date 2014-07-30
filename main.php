@@ -59,14 +59,17 @@ class hykwMVC
     return self::RET_OK;
   }
 
-  public function callHelper($helperName)
+  public function callHelper($helperName, $funcName = FALSE, $args = FALSE)
   {
     $file = sprintf('%s/%s/%s.php', $this->dir_view, $this->dir_helper, $helperName);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_HELPER_NOT_FOUND;
       exit;
     }
-    
+
+    if ($funcName != FALSE)
+      return call_user_func($funcName, $args);
+
     return self::RET_OK;
   }
 
