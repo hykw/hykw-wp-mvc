@@ -37,10 +37,12 @@ class hykwMVC
     $this->dir_files = isset($dir_args['dir_files']) ? $dir_args['dir_files'] : 'files';
   }
 
-  public function routes($routes_top = '/top')
+  public function routes($routes)
   {
     if (is_home()) {
-      $url = $routes_top;
+      $url = $routes['/'];
+    } elseif (is_search()) {
+      $url = $routes['search'];
     } else {
       $url = hykwWPData::get_in_page_parent_permalink();
     }
@@ -49,7 +51,11 @@ class hykwMVC
       return self::ROUTE_404;
 
     $file = sprintf('%s%s/%s', $this->dir_controller, $url, self::BASE_FILE);
-    locate_template($file, true);
+    if (locate_template($file, true) == '') {
+      echo self::ROUTE_CONTROLLER_NOT_FOUND;
+      exit;
+    }
+
     return self::RET_OK;
   }
 
