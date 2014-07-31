@@ -2,24 +2,24 @@ hykw-wp-mvc
 ===========
 
     /controller/[URL]/index.php
-    
+
     /model/[URL]/index.php
            behavior/xxx.php
-    
+
     /view/[URL]/index.php
           helper/xxxx.php
-    
+
     /files/css
            js
            images
-    
-    - / は top に対応する（/ -> /controller/top/index.php)
+
+    ※/ は top に対応する（/ -> /controller/top/index.php)
 
 # 呼び出し例
-- functions.php
+## functions.php
     $gobjMVC = new hykwMVC(__DIR__);
 
-- /index.php
+## /index.php
     $routes = array(
       '/' => '/top',
       'search' => '/search',
@@ -28,13 +28,13 @@ hykw-wp-mvc
     $noRoutes = array(
       '/archives' => '/',
     );
-    
+
     $ret = $gobjMVC->routes($routes, $noRoutes);
     if ($ret != hykwMVC::RET_OK) {
       echo $ret;
     }
 
-- controller/[URL]/index.php
+## controller/[URL]/index.php
     global $gobjMVC;
     $gobjMVC->callHelper('header');
 
@@ -51,3 +51,4 @@ hykw-wp-mvc
     echo $gobjMVC->callView('column', 'view', $args);
 
     $gobjMVC->callHelper('footer');
+
