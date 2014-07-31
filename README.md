@@ -1,54 +1,23 @@
 hykw-wp-mvc
 ===========
 
+## ディレクトリ構造
     /controller/[URL]/index.php
+           component/xxxxx.php
 
     /model/[URL]/index.php
-           behavior/xxx.php
+           behavior/xxxxx.php
 
     /view/[URL]/index.php
-          helper/xxxx.php
+          helper/xxxxx.php
 
-    /files/css
-           js
-           images
+    /files/     cssやjsディレクトリなどを配置することを想定
 
-    ※/ は top に対応する（/ -> /controller/top/index.php)
+* ※index.php で、/ は top に、検索結果は search に対応させています
+ * /controller/top/index.php
+ * /controller/search/index.php
 
-# 呼び出し例
-## functions.php
-    $gobjMVC = new hykwMVC(__DIR__);
 
-## /index.php
-    $routes = array(
-      '/' => '/top',
-      'search' => '/search',
-    );
-
-    $noRoutes = array(
-      '/archives' => '/',
-    );
-
-    $ret = $gobjMVC->routes($routes, $noRoutes);
-    if ($ret != hykwMVC::RET_OK) {
-      echo $ret;
-    }
-
-## controller/[URL]/index.php
-    global $gobjMVC;
-    $gobjMVC->callHelper('header');
-
-    $imgPath = $gobjMVC->callBehavior('urls', 'get_imgPath');
-    $html_sidebar = $gobjMVC->callHelper('sidebar', 'get_sidebarHTML', $imgPath);
-
-    $contents = $gobjMVC->callModel('column', 'get_columnContents');
-
-    $args = array(
-      'imgPath' => $imgPath,
-      'contents' => $contents,
-      'html_sidebar' => $html_sidebar,
-    );
-    echo $gobjMVC->callView('column', 'view', $args);
-
-    $gobjMVC->callHelper('footer');
+## 呼び出し例
+themes/example を参照ください。
 
