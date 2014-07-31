@@ -38,8 +38,19 @@ class hykwMVC
     $this->dir = $dir;
   }
 
-  public function routes($routes)
+
+  public function routes($routes, $noRoutes = FALSE)
   {
+    # $noRoutes にマッチしたURLは、指定URLへリダイレクト
+    if ($noRoutes != FALSE) {
+      $parent_url = hykwWPData::get_page_parent_permalink();
+
+      if (isset($noRoutes[$parent_url])) {
+	header(sprintf("Location: %s\n", $noRoutes[$parent_url]));
+	exit;
+      }
+    }
+
     if (is_home()) {
       $url = $routes['/'];
     } elseif (is_search()) {
