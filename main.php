@@ -20,6 +20,7 @@ class hykwMVC
   const ROUTE_VIEW_NOT_FOUND = 'view not found';
   const ROUTE_MODEL_NOT_FOUND = 'model not found';
   const ROUTE_BEHAVIOR_NOT_FOUND = 'behavior not found';
+  const ROUTE_COMPONENT_NOT_FOUND = 'component not found';
 
   const BASE_FILE = 'index.php';  ## e.g. controller/[URL]/index.php
 
@@ -30,6 +31,7 @@ class hykwMVC
   const DIR_HELPER = 'helper';
   const DIR_BEHAVIOR = 'behavior';
   const DIR_STATIC_FILES = 'files';
+  const DIR_COMPONENT = 'component';
  
   function __construct($dir)
   {
@@ -99,6 +101,17 @@ class hykwMVC
     $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, $behaviorName);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_BEHAVIOR_NOT_FOUND;
+      exit;
+    }
+
+    return call_user_func($funcName, $args);
+  }
+
+  public function callComponent($componentName, $funcName, $args = FALSE)
+  {
+    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, $componentName);
+    if (locate_template($file, true) == '') {
+      echo self::ROUTE_COMPONENT_NOT_FOUND;
       exit;
     }
 
