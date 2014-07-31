@@ -24,17 +24,16 @@ class hykwMVC
   const BASE_FILE = 'index.php';  ## e.g. controller/[URL]/index.php
 
   private $dir;
-  private $dir_controller, $dir_model, $dir_view, $dir_helper, $dir_behavior, $dir_files;
-  
-  function __construct($dir, $dir_args = FALSE)
+  const DIR_CONTROLLER = 'controller';
+  const DIR_MODEL = 'model';
+  const DIR_VIEW = 'view';
+  const DIR_HELPER = 'helper';
+  const DIR_BEHAVIOR = 'behavior';
+  const DIR_STATIC_FILES = 'files';
+ 
+  function __construct($dir)
   {
     $this->dir = $dir;
-    $this->dir_controller = isset($dir_args['dir_controller']) ? $dir_args['dir_controller'] : 'controller';
-    $this->dir_model = isset($dir_args['dir_model']) ? $dir_args['dir_model'] : 'model';
-    $this->dir_view = isset($dir_args['dir_view']) ? $dir_args['dir_view'] : 'view';
-    $this->dir_helper = isset($dir_args['dir_helper']) ? $dir_args['dir_helper'] : 'helper';
-    $this->dir_behavior = isset($dir_args['dir_behavior']) ? $dir_args['dir_behavior'] : 'behavior';
-    $this->dir_files = isset($dir_args['dir_files']) ? $dir_args['dir_files'] : 'files';
   }
 
   public function routes($routes)
@@ -50,7 +49,7 @@ class hykwMVC
     if ($url == FALSE)
       return self::ROUTE_404;
 
-    $file = sprintf('%s%s/%s', $this->dir_controller, $url, self::BASE_FILE);
+    $file = sprintf('%s%s/%s', self::DIR_CONTROLLER, $url, self::BASE_FILE);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_CONTROLLER_NOT_FOUND;
       exit;
@@ -61,7 +60,7 @@ class hykwMVC
 
   public function callHelper($helperName, $funcName = FALSE, $args = FALSE)
   {
-    $file = sprintf('%s/%s/%s.php', $this->dir_view, $this->dir_helper, $helperName);
+    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, $helperName);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_HELPER_NOT_FOUND;
       exit;
@@ -75,7 +74,7 @@ class hykwMVC
 
   public function callView($viewName, $funcName, $args = FALSE)
   {
-    $file = sprintf('%s/%s/%s', $this->dir_view, $viewName, self::BASE_FILE);
+    $file = sprintf('%s/%s/%s', self::DIR_VIEW, $viewName, self::BASE_FILE);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_VIEW_NOT_FOUND;
       exit;
@@ -86,7 +85,7 @@ class hykwMVC
 
   public function callModel($modelName, $funcName, $args = FALSE)
   {
-    $file = sprintf('%s/%s/%s', $this->dir_model, $modelName, self::BASE_FILE);
+    $file = sprintf('%s/%s/%s', self::DIR_MODEL, $modelName, self::BASE_FILE);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_MODEL_NOT_FOUND;
       exit;
@@ -97,7 +96,7 @@ class hykwMVC
 
   public function callBehavior($behaviorName, $funcName, $args = FALSE)
   {
-    $file = sprintf('%s/%s/%s.php', $this->dir_model, $this->dir_behavior, $behaviorName);
+    $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, $behaviorName);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_BEHAVIOR_NOT_FOUND;
       exit;
