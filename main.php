@@ -60,12 +60,13 @@ class hykwMVC
     return self::RET_OK;
   }
 
-  public function callHelper($helperName, $funcName = FALSE, $args = FALSE)
+
+  private function _callTemplates($calledFile, $error_not_found, $funcName, $args, $onErrorExit = TRUE)
   {
-    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, $helperName);
-    if (locate_template($file, true) == '') {
-      echo self::ROUTE_HELPER_NOT_FOUND;
-      exit;
+    if (locate_template($calledFile, true) == '') {
+      echo $error_not_found;
+      if ($onErrorExit)
+	exit;
     }
 
     if ($funcName != FALSE)
@@ -74,48 +75,35 @@ class hykwMVC
     return self::RET_OK;
   }
 
+  public function callComponent($componentName, $funcName, $args = FALSE)
+  {
+    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, $componentName);
+    return self::_callTemplates($file, self::ROUTE_COMPONENT_NOT_FOUND, $funcName, $args);
+  }
+
   public function callView($viewName, $funcName, $args = FALSE)
   {
     $file = sprintf('%s/%s/%s', self::DIR_VIEW, $viewName, self::BASE_FILE);
-    if (locate_template($file, true) == '') {
-      echo self::ROUTE_VIEW_NOT_FOUND;
-      exit;
-    }
+    return self::_callTemplates($file, self::ROUTE_VIEW_NOT_FOUND, $funcName, $args);
+  }
 
-    return call_user_func($funcName, $args);
+  public function callHelper($helperName, $funcName = FALSE, $args = FALSE)
+  {
+    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, $helperName);
+    return self::_callTemplates($file, self::ROUTE_HELPER_NOT_FOUND, $funcName, $args);
   }
 
   public function callModel($modelName, $funcName, $args = FALSE)
   {
     $file = sprintf('%s/%s/%s', self::DIR_MODEL, $modelName, self::BASE_FILE);
-    if (locate_template($file, true) == '') {
-      echo self::ROUTE_MODEL_NOT_FOUND;
-      exit;
-    }
-
-    return call_user_func($funcName, $args);
+    return self::_callTemplates($file, self::ROUTE_MODEL_NOT_FOUND, $funcName, $args);
   }
 
   public function callBehavior($behaviorName, $funcName, $args = FALSE)
   {
     $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, $behaviorName);
-    if (locate_template($file, true) == '') {
-      echo self::ROUTE_BEHAVIOR_NOT_FOUND;
-      exit;
-    }
-
-    return call_user_func($funcName, $args);
+    return self::_callTemplates($file, self::ROUTE_BEHAVIOR_NOT_FOUND, $funcName, $args);
   }
 
-  public function callComponent($componentName, $funcName, $args = FALSE)
-  {
-    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, $componentName);
-    if (locate_template($file, true) == '') {
-      echo self::ROUTE_COMPONENT_NOT_FOUND;
-      exit;
-    }
-
-    return call_user_func($funcName, $args);
-  }
 
 }
