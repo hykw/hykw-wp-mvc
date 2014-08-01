@@ -1,8 +1,16 @@
 <?php
 
-wp_footer();
+function getFooter()
+{
+  $ret = '';
 
-echo <<<EOL
+  $ret .= hykwWPData::get_wp_footer();
+
+  $ret .= <<<EOL
 </body>
 </html>
 EOL;
+
+  return $ret;
+}
+

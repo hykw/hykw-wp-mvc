@@ -1,7 +1,7 @@
 <?php
 
 global $gobjMVC;
-$gobjMVC->callHelper('header');
+echo $gobjMVC->callHelper('header', 'getHeader');
 
 $imgPath = $gobjMVC->callBehavior('urls', 'get_imgPath');
 
@@ -15,4 +15,4 @@ $args = array(
 
 echo $gobjMVC->callView('top', 'view', $args);
 
-$gobjMVC->callHelper('footer');
+echo $gobjMVC->callHelper('footer', 'getFooter');
