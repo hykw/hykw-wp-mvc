@@ -4,11 +4,11 @@
    * @version 0.1
    */
   /*
-	 Plugin Name: HYKW MVC Plugin
-	 Plugin URI: https://github.com/hykw/hykw-wp-mvc
-	 Description: MVC プラグイン
-	 Author: hitoshi-hayakawa
-	 Version: 0.1
+    Plugin Name: HYKW MVC Plugin
+    Plugin URI: https://github.com/hykw/hykw-wp-mvc
+    Description: MVC プラグイン
+    Author: hitoshi-hayakawa
+    Version: 0.1
   */
 
 class hykwMVC
@@ -46,8 +46,8 @@ class hykwMVC
       $parent_url = hykwWPData::get_page_parent_permalink();
 
       if (isset($noRoutes[$parent_url])) {
-				header(sprintf("Location: %s\n", $noRoutes[$parent_url]));
-				exit;
+        header(sprintf("Location: %s\n", $noRoutes[$parent_url]));
+        exit;
       }
     }
 
@@ -60,7 +60,7 @@ class hykwMVC
       $controller = hykwWPData::get_in_page_parent_permalink();
 
       if (isset($routes[$controller]))
-	$controller = $routes[$controller];
+        $controller = $routes[$controller];
     }
 
     if ($controller == FALSE)
