@@ -51,18 +51,22 @@ class hykwMVC
       }
     }
 
+    $controller = FALSE;
     if (is_home()) {
-      $url = $routes['/'];
+      $controller = $routes['/'];
     } elseif (is_search()) {
-      $url = $routes['search'];
+      $controller = $routes['search'];
     } else {
-      $url = hykwWPData::get_in_page_parent_permalink();
+      $controller = hykwWPData::get_in_page_parent_permalink();
+
+      if (isset($routes[$controller]))
+	$controller = $routes[$controller];
     }
 
-    if ($url == FALSE)
+    if ($controller == FALSE)
       return self::ROUTE_404;
 
-    $file = sprintf('%s%s/%s', self::DIR_CONTROLLER, $url, self::BASE_FILE);
+    $file = sprintf('%s/%s/%s', self::DIR_CONTROLLER, $controller, self::BASE_FILE);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_CONTROLLER_NOT_FOUND;
       exit;
