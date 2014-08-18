@@ -39,7 +39,7 @@ class hykwMVC
   }
 
 
-  public function routes($routes, $noRoutes = FALSE)
+  public function routes($routes, $noRoutes = FALSE, $noContentsRoutes = FALSE)
   {
     # $noRoutes にマッチしたURLは、指定URLへリダイレクト
     if ($noRoutes != FALSE) {
@@ -63,8 +63,26 @@ class hykwMVC
         $controller = $routes[$controller];
     }
 
-    if ($controller == FALSE)
-      return self::ROUTE_404;
+    if ($controller === FALSE) {
+      # コントローラが見つからない場合
+      if ($noContentsRoutes != FALSE) {
+	$url = $_SERVER['REQUEST_URI'];
+	if (substr($url, -1) != '/')
+	  $url .= '/';
+
+	foreach ($noContentsRoutes as $key => $value) {
+	  $url_routes = (substr($key, -1) != '/') ? $key.'/' : $key;
+
+	  if (strpos($url, $url_routes) === 0) {
+	    $controller = $value;
+	    break;
+	  }
+	}
+      }
+      
+      if ($controller === FALSE)
+	return self::ROUTE_404;
+    }
 
     $file = sprintf('%s/%s/%s', self::DIR_CONTROLLER, $controller, self::BASE_FILE);
     if (locate_template($file, true) == '') {
