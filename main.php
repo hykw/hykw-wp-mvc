@@ -93,43 +93,11 @@ class hykwMVC
     return self::RET_OK;
   }
 
-  private function _callTemplates($dir, $args, $onErrorExit = TRUE)
+  private function _callTemplates($loadFile, $args, $error_not_found, $onErrorExit = TRUE)
   {
-    $file = array_shift($args);
     $funcName = array_shift($args);
 
-    switch($dir) {
-        case self::DIR_COMPONENT:
-          $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, $file);
-          $error_not_found = self::ROUTE_CONTROLLER_NOT_FOUND;
-          break;
-
-        case self::DIR_VIEW:
-          $file = sprintf('%s/%s/%s', self::DIR_VIEW, $file, self::BASE_FILE);
-          $error_not_found = self::ROUTE_VIEW_NOT_FOUND;
-          break;
-
-        case self::DIR_HELPER:
-          $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, $file);
-          $error_not_found = self::ROUTE_HELPER_NOT_FOUND;
-          break;
-
-        case self::DIR_MODEL:
-          $file = sprintf('%s/%s/%s', self::DIR_MODEL, $file, self::BASE_FILE);
-          $error_not_found = self::ROUTE_MODEL_NOT_FOUND;
-          break;
-
-        case self::DIR_BEHAVIOR:
-          $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, $file);
-          $error_not_found = self::ROUTE_BEHAVIOR_NOT_FOUND;
-          break;
-
-        default:
-          echo self::ROUTE_404;
-          exit;
-    }
-
-    if (locate_template($file, true) == '') {
+    if (locate_template($loadFile, true) == '') {
       echo $error_not_found;
       if ($onErrorExit)
         exit;
@@ -144,30 +112,47 @@ class hykwMVC
   public function callComponent()
   {
     $args = func_get_args();
-    return self::_callTemplates(self::DIR_COMPONENT, $args);
+    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, 
+	array_shift($args));
+
+    return self::_callTemplates($file, $args, self::ROUTE_CONTROLLER_NOT_FOUND);
   }
 
   public function callView()
   {
     $args = func_get_args();
-    return self::_callTemplates(self::DIR_VIEW, $args);
+    $file = sprintf('%s/%s/%s', self::DIR_VIEW, 
+	array_shift($args),
+	self::BASE_FILE);
+
+    return self::_callTemplates($file, $args, self::ROUTE_VIEW_NOT_FOUND);
   }
 
   public function callHelper()
   {
     $args = func_get_args();
-    return self::_callTemplates(self::DIR_HELPER, $args);
+    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, 
+	array_shift($args));
+
+    return self::_callTemplates($file, $args, self::ROUTE_HELPER_NOT_FOUND);
   }
 
   public function callModel()
   {
     $args = func_get_args();
-    return self::_callTemplates(self::DIR_MODEL, $args);
+    $file = sprintf('%s/%s/%s', self::DIR_MODEL, 
+	array_shift($args),
+	self::BASE_FILE);
+
+    return self::_callTemplates($file, $args, self::ROUTE_MODEL_NOT_FOUND);
   }
 
   public function callBehavior()
   {
     $args = func_get_args();
-    return self::_callTemplates(self::DIR_BEHAVIOR, $args);
+    $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, 
+	array_shift($args));
+
+    return self::_callTemplates($file, $args, self::ROUTE_BEHAVIOR_NOT_FOUND);
   }
 }
