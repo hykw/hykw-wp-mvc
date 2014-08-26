@@ -75,6 +75,12 @@ class hykwMVC
 
 	  if (strpos($url, $url_routes) === 0) {
 	    $controller = $value;
+
+	    # 固定ページとして持ってるわけじゃないので、WordPressを騙す
+	    global $wp_query;
+	    $wp_query->is_404=null;
+	    status_header(200);
+
 	    break;
 	  }
 	}
