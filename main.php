@@ -24,6 +24,10 @@ class hykwMVC
 
   const BASE_FILE = 'index.php';  ## e.g. controller/[URL]/index.php
 
+  const ROUTENAME_TOP = '/';
+  const ROUTENAME_SEARCH = 'search';
+  const ROUTENAME_PREVIEW = 'preview';
+
   private $dir;
   const DIR_CONTROLLER = 'controller';
   const DIR_MODEL = 'model';
@@ -53,9 +57,9 @@ class hykwMVC
 
     $controller = FALSE;
     if (is_home()) {
-      $controller = $routes['/'];
+      $controller = $routes[self::ROUTENAME_TOP];
     } elseif (is_search()) {
-      $controller = $routes['search'];
+      $controller = $routes[self::ROUTENAME_SEARCH];
     } else {
       $controller = hykwWPData::get_in_page_parent_permalink();
 
@@ -90,6 +94,19 @@ class hykwMVC
 	return self::ROUTE_404;
     }
 
+    # preview対応
+    if (is_preview()) {
+	$postid = get_the_ID();
+	$posttype = get_post_type($postid);
+
+	# 投稿の場合
+	if ($posttype == 'post') {
+	  if (isset($routes[self::ROUTENAME_PREVIEW]))
+	    $controller = $routes[self::ROUTENAME_PREVIEW];
+	}
+    }
+
+    # load controller
     $file = sprintf('%s/%s/%s', self::DIR_CONTROLLER, $controller, self::BASE_FILE);
     if (locate_template($file, true) == '') {
       echo self::ROUTE_CONTROLLER_NOT_FOUND;
