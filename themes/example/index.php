@@ -2,8 +2,10 @@
 
 # 通常
 $routes = array(
-    '/' => '/top',
-    'search' => '/search',
+    hykwMVC::ROUTENAME_TOP => 'top',
+    hykwMVC::ROUTENAME_SEARCH => 'search',
+    hykwMVC::ROUTENAME_PREVIEW => 'archives',   # postのpreviewのコントローラ名
+
 );
 
 # 指定URLへのアクセスはリダイレクト(/archives -> / にリダイレクト）
