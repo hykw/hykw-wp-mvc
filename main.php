@@ -70,40 +70,40 @@ class hykwMVC
     if ($controller === FALSE) {
       # コントローラが見つからない場合
       if ($noContentsRoutes != FALSE) {
-	$url = $_SERVER['REQUEST_URI'];
-	if (substr($url, -1) != '/')
-	  $url .= '/';
+        $url = $_SERVER['REQUEST_URI'];
+        if (substr($url, -1) != '/')
+          $url .= '/';
 
-	foreach ($noContentsRoutes as $key => $value) {
-	  $url_routes = (substr($key, -1) != '/') ? $key.'/' : $key;
+        foreach ($noContentsRoutes as $key => $value) {
+          $url_routes = (substr($key, -1) != '/') ? $key.'/' : $key;
 
-	  if (strpos($url, $url_routes) === 0) {
-	    $controller = $value;
+          if (strpos($url, $url_routes) === 0) {
+            $controller = $value;
 
-	    # 固定ページとして持ってるわけじゃないので、WordPressを騙す
-	    global $wp_query;
-	    $wp_query->is_404=null;
-	    status_header(200);
+            # 固定ページとして持ってるわけじゃないので、WordPressを騙す
+            global $wp_query;
+            $wp_query->is_404=null;
+            status_header(200);
 
-	    break;
-	  }
-	}
+            break;
+          }
+        }
       }
       
       if ($controller === FALSE)
-	return self::ROUTE_404;
+        return self::ROUTE_404;
     }
 
     # preview対応
     if (is_preview()) {
-	$postid = get_the_ID();
-	$posttype = get_post_type($postid);
+        $postid = get_the_ID();
+        $posttype = get_post_type($postid);
 
-	# 投稿の場合
-	if ($posttype == 'post') {
-	  if (isset($routes[self::ROUTENAME_PREVIEW]))
-	    $controller = $routes[self::ROUTENAME_PREVIEW];
-	}
+        # 投稿の場合
+        if ($posttype == 'post') {
+          if (isset($routes[self::ROUTENAME_PREVIEW]))
+            $controller = $routes[self::ROUTENAME_PREVIEW];
+        }
     }
 
     # load controller
@@ -136,7 +136,7 @@ class hykwMVC
   {
     $args = func_get_args();
     $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, 
-	array_shift($args));
+        array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_CONTROLLER_NOT_FOUND);
   }
@@ -145,8 +145,8 @@ class hykwMVC
   {
     $args = func_get_args();
     $file = sprintf('%s/%s/%s', self::DIR_VIEW, 
-	array_shift($args),
-	self::BASE_FILE);
+        array_shift($args),
+        self::BASE_FILE);
 
     return self::_callTemplates($file, $args, self::ROUTE_VIEW_NOT_FOUND);
   }
@@ -155,7 +155,7 @@ class hykwMVC
   {
     $args = func_get_args();
     $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, 
-	array_shift($args));
+        array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_HELPER_NOT_FOUND);
   }
@@ -164,8 +164,8 @@ class hykwMVC
   {
     $args = func_get_args();
     $file = sprintf('%s/%s/%s', self::DIR_MODEL, 
-	array_shift($args),
-	self::BASE_FILE);
+        array_shift($args),
+        self::BASE_FILE);
 
     return self::_callTemplates($file, $args, self::ROUTE_MODEL_NOT_FOUND);
   }
@@ -174,7 +174,7 @@ class hykwMVC
   {
     $args = func_get_args();
     $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, 
-	array_shift($args));
+        array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_BEHAVIOR_NOT_FOUND);
   }
