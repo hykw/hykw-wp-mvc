@@ -121,7 +121,7 @@ class hykwMVC
     $funcName = array_shift($args);
 
     if (locate_template($loadFile, true) == '') {
-      echo $error_not_found;
+      echo sprintf("%s (%s)\n", $error_not_found, $loadFile);
       if ($onErrorExit)
         exit;
     }
