@@ -1,14 +1,13 @@
 <?php
   /**
    * @package HYKW MVC Plugin
-   * @version 0.1
+   * @version 1.1
    */
   /*
     Plugin Name: HYKW MVC Plugin
     Plugin URI: https://github.com/hykw/hykw-wp-mvc
     Description: MVC プラグイン
     Author: hitoshi-hayakawa
-    Version: 0.1
   */
 
 class hykwMVC
@@ -21,6 +20,7 @@ class hykwMVC
   const ROUTE_MODEL_NOT_FOUND = 'model not found';
   const ROUTE_BEHAVIOR_NOT_FOUND = 'behavior not found';
   const ROUTE_COMPONENT_NOT_FOUND = 'component not found';
+  const ROUTE_UTIL_NOT_FOUND = 'util not found';
 
   const BASE_FILE = 'index.php';  ## e.g. controller/[URL]/index.php
 
@@ -36,6 +36,7 @@ class hykwMVC
   const DIR_BEHAVIOR = 'behavior';
   const DIR_STATIC_FILES = 'files';
   const DIR_COMPONENT = 'component';
+  const DIR_UTIL = 'util';
  
   function __construct($dir)
   {
@@ -178,4 +179,14 @@ class hykwMVC
 
     return self::_callTemplates($file, $args, self::ROUTE_BEHAVIOR_NOT_FOUND);
   }
+
+  public function callUtil()
+  {
+    $args = func_get_args();
+    $file = sprintf('%s/%s.php', self::DIR_UTIL, 
+        array_shift($args));
+
+    return self::_callTemplates($file, $args, self::ROUTE_UTIL_NOT_FOUND);
+  }
+
 }
