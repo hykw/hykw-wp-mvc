@@ -1,13 +1,10 @@
 <?php
-  /**
-   * @package HYKW MVC Plugin
-   * @version 1.1
-   */
   /*
     Plugin Name: HYKW MVC Plugin
     Plugin URI: https://github.com/hykw/hykw-wp-mvc
     Description: MVC プラグイン
     Author: hitoshi-hayakawa
+    Version: 1.1
   */
 
 class hykwMVC
