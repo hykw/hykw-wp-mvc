@@ -264,14 +264,14 @@ class hykwMVC
   public function _get_controllerName($routes)
   {
     $controller = "";
+    $url = sub_hykwWPData_url::get_requestURL(FALSE);
 
-    if (is_home()) {
+    if ($url == '/') {
       return $routes[self::ROUTENAME_TOP];
     } elseif (is_search()) {
       return $routes[self::ROUTENAME_SEARCH];
     } else {
       # 完全一致
-      $url = sub_hykwWPData_url::get_requestURL(FALSE);
       $controller = self::_get_routeURL_longest($routes, $url);
 
       return $controller;
