@@ -257,21 +257,23 @@ class hykwMVC
 
   /**
    * _get_controllerName 呼び出すコントローラの名前を取得
-   * 
-   * @param array $routes 
+   *
+   * @param array $routes
    * @return string コントローラ名（見つからない・取得失敗時は"")
    */
   public function _get_controllerName($routes)
   {
     $controller = "";
+    $url = sub_hykwWPData_url::get_requestURL(FALSE);
 
-    if (is_home()) {
+    # カスタム投稿タイプの場合、is_home() が TRUE になるケースが
+    # あるので、ベタな方法で比較するのが安全
+    if ( ($url == '/') || (preg_match('/^\/page\//', $url)) ) {
       return $routes[self::ROUTENAME_TOP];
     } elseif (is_search()) {
       return $routes[self::ROUTENAME_SEARCH];
     } else {
       # 完全一致
-      $url = sub_hykwWPData_url::get_requestURL(FALSE);
       $controller = self::_get_routeURL_longest($routes, $url);
 
       return $controller;
