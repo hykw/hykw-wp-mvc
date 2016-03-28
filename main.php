@@ -4,7 +4,7 @@
     Plugin URI: https://github.com/hykw/hykw-wp-mvc
     Description: MVC プラグイン
     Author: hitoshi-hayakawa
-    Version: 2.0.0
+    Version: 2.1.0
    */
 
 require_once ('class/base.php');
@@ -24,6 +24,8 @@ class hykwMVC
   const BASE_FILE = 'index.php';  ## e.g. controller/[URL]/index.php
 
   const ROUTENAME_TOP = '/';
+  const PAGENAME_TOP = 'page';   # e.g. /page/2
+
   const ROUTENAME_SEARCH = 'search';
   const ROUTENAME_PREVIEW = 'preview';
 
@@ -268,7 +270,8 @@ class hykwMVC
 
     # カスタム投稿タイプの場合、is_home() が TRUE になるケースが
     # あるので、ベタな方法で比較するのが安全
-    if ( ($url == '/') || (preg_match('/^\/page\//', $url)) ) {
+    $ptn_top_pages = sprintf('/^\/%s\//', self::PAGENAME_TOP);
+    if ( ($url == '/') || (preg_match($ptn_top_pages, $url)) ) {
       return $routes[self::ROUTENAME_TOP];
     } elseif (is_search()) {
       return $routes[self::ROUTENAME_SEARCH];
