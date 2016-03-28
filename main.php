@@ -271,10 +271,13 @@ class hykwMVC
     # カスタム投稿タイプの場合、is_home() が TRUE になるケースが
     # あるので、ベタな方法で比較するのが安全
     $ptn_top_pages = sprintf('/^\/%s\//', self::PAGENAME_TOP);
-    if ( ($url == '/') || (preg_match($ptn_top_pages, $url)) ) {
-      return $routes[self::ROUTENAME_TOP];
-    } elseif (is_search()) {
+
+    # ※$urlは QUERY_STRING 無しなので、先に検索をマッチさせないと
+    # 検索結果が狂うので注意
+    if (is_search()) {
       return $routes[self::ROUTENAME_SEARCH];
+    } elseif ( ($url == '/') || (preg_match($ptn_top_pages, $url)) ) {
+      return $routes[self::ROUTENAME_TOP];
     } else {
       # 完全一致
       $controller = self::_get_routeURL_longest($routes, $url);
