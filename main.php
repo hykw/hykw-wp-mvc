@@ -4,7 +4,7 @@
     Plugin URI: https://github.com/hykw/hykw-wp-mvc
     Description: MVC プラグイン
     Author: hitoshi-hayakawa
-    Version: 2.1.0
+    Version: 2.1.1
    */
 
 require_once ('class/base.php');
