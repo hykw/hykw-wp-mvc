@@ -4,7 +4,7 @@
     Plugin URI: https://github.com/hykw/hykw-wp-mvc
     Description: MVC プラグイン
     Author: hitoshi-hayakawa
-    Version: 2.1.1
+    Version: 2.1.2
    */
 
 require_once ('class/base.php');
@@ -53,11 +53,20 @@ class hykwMVC
    * @param array $noRoutes (keyの末尾に/を付けないように注意: OK:'/archive', NG='/archive/')
    * @param mixed $noContentsRoutes
    * @param boolean $isUnitTest TRUEなら、unittest 用のリターン値を返す
+   * @param string $queryString FALSE以外なら、現在のQueryStringを差し替え
    * @return string
    */
-  public function routes($routes, $noRoutes = FALSE, $noContentsRoutes = FALSE, $isUnitTest = FALSE)
+  public function routes($routes, $noRoutes = FALSE, $noContentsRoutes = FALSE, $isUnitTest = FALSE, $queryString = FALSE)
   {
-    $url = sub_hykwWPData_url::get_requestURL(FALSE);
+    /*
+      パーマリンクを変更している時に、preview すると /?p=12345 のようなURLに
+      なっちゃって不都合な時があるので、inject できるようにする
+     */
+    if ($queryString === FALSE)
+      $url = sub_hykwWPData_url::get_requestURL(FALSE);
+    else
+      $url = $queryString;
+
 
     ########## $noRoutes にマッチしたら、リダイレクトして終了(UnitTest もここで値を返す）
     if ( ($noRoutes != FALSE) && (count($noRoutes) > 0) ) {
