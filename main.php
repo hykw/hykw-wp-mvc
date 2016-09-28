@@ -47,17 +47,16 @@ class hykwMVC
 
 
   /**
-   * routes 
-   * 
-   * @param mixed $routes 
+   * routes
+   *
+   * @param mixed $routes
    * @param array $noRoutes (keyの末尾に/を付けないように注意: OK:'/archive', NG='/archive/')
-   * @param mixed $noContentsRoutes 
+   * @param mixed $noContentsRoutes
    * @param boolean $isUnitTest TRUEなら、unittest 用のリターン値を返す
    * @return string
    */
   public function routes($routes, $noRoutes = FALSE, $noContentsRoutes = FALSE, $isUnitTest = FALSE)
   {
-
     $url = sub_hykwWPData_url::get_requestURL(FALSE);
 
     ########## $noRoutes にマッチしたら、リダイレクトして終了(UnitTest もここで値を返す）
@@ -159,7 +158,7 @@ class hykwMVC
   public function callComponent()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT, 
+    $file = sprintf('%s/%s/%s.php', self::DIR_CONTROLLER, self::DIR_COMPONENT,
       array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_CONTROLLER_NOT_FOUND);
@@ -168,7 +167,7 @@ class hykwMVC
   public function callView()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s/%s', self::DIR_VIEW, 
+    $file = sprintf('%s/%s/%s', self::DIR_VIEW,
       array_shift($args),
       self::BASE_FILE);
 
@@ -178,7 +177,7 @@ class hykwMVC
   public function callHelper()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER, 
+    $file = sprintf('%s/%s/%s.php', self::DIR_VIEW, self::DIR_HELPER,
       array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_HELPER_NOT_FOUND);
@@ -187,7 +186,7 @@ class hykwMVC
   public function callModel()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s/%s', self::DIR_MODEL, 
+    $file = sprintf('%s/%s/%s', self::DIR_MODEL,
       array_shift($args),
       self::BASE_FILE);
 
@@ -197,7 +196,7 @@ class hykwMVC
   public function callBehavior()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR, 
+    $file = sprintf('%s/%s/%s.php', self::DIR_MODEL, self::DIR_BEHAVIOR,
       array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_BEHAVIOR_NOT_FOUND);
@@ -206,7 +205,7 @@ class hykwMVC
   public function callUtil()
   {
     $args = func_get_args();
-    $file = sprintf('%s/%s.php', self::DIR_UTIL, 
+    $file = sprintf('%s/%s.php', self::DIR_UTIL,
       array_shift($args));
 
     return self::_callTemplates($file, $args, self::ROUTE_UTIL_NOT_FOUND);
@@ -291,7 +290,7 @@ class hykwMVC
 
   /**
    * _load_controller コントローラを読み込む
-   * 
+   *
    * @param string $controller コントローラ名("top" のように、先頭に "/top" が付かないことを想定)
    * @param boolean $isUnitTest TRUEなら読み込まずに、ファイルの存在チェックのみ行う
    * @return boolean TRUE=読み込み成功, FALSE=読み込み失敗（もしくは指定コントローラのファイルが無い）
@@ -314,7 +313,7 @@ class hykwMVC
 
   /**
    * _isExistTemplate_childAndParent 子テンプレート、親テンプレートの順にファイルを探す
-   * 
+   *
    * @param string $file テンプレートファイル名
    * @return integer 1=子テンプレートのとこにあった、2=親テンプレートのとこにあった、-1 = どっちにも無い
    */
@@ -334,8 +333,8 @@ class hykwMVC
 
   /**
    * _get_routeURL_defaultRules デフォルトの探索ルールに従い、コントローラを探す（longest match)
-   * 
-   * @param array $routes 
+   *
+   * @param array $routes
    * @param string $url 現在のURL
    * @return string コントローラ名(未定義の場合は"")
    */
